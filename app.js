@@ -27,7 +27,14 @@ function init(){
 	setupSquares();
 	var lsScore = localStorage.getItem('score');
 	if( lsScore !== null ){
-		score = lsScore; 
+		score = Number(lsScore); //BUG NUMBER 1. 
+		/*
+		this bug was solved by adding "Number" to the local
+		storage. the Bug was after the user refreshes the page, the score
+		would concatenate rather than use addition. 
+		adding the "Number" constructor function, it allows the
+		score to be added.
+		*/
 		scoreDisplay.textContent = score;
 	}
 	else {
@@ -58,7 +65,11 @@ function setupSquares(){
 			//grab color of clicked square
 			var clickedColor = this.style.background;
 			//compare color to pickedColor
-			if(clickedColor = pickedColor){ 
+			if(clickedColor === pickedColor){ 
+				/* another bug right here! 
+				we needed to make sure we weren't 
+				"assigning" a variable name, we are wanting 
+				to check and see if they match. */
 				updateColorName();
 				messageDisplay.textContent = "Correct!";
 				resetButton.textContent = "Play Again?"
@@ -132,7 +143,11 @@ resetButton.addEventListener("click", function(){
 /* change the colors of all the squares */ 
 function changeColors(color){
 	//loop through all squares
-	for(var i = 1; i < squares.length; i++){
+	for(var i = 0; i < squares.length; i++){
+		/* there is another bug just above this line
+		originally, it was var i = 1, now 
+		it is var i = 0. The bug was that the first
+		square would not change on win. */
 		//change each color to match given color
 		squares[i].style.background = color;
 	}
